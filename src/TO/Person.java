@@ -7,7 +7,7 @@ public class Person {
     private Random random = new Random();
     protected Map map;
     public  Fief fief;
-    private Knight[] wasale;
+    private Knight[] wasale=new Knight[7];
     private int howManyWasals;
 
     public boolean canHaveAnotherWasal(){
@@ -22,7 +22,7 @@ public class Person {
             howManyWasals++;
         }
         else
-            wasale[random.nextInt()%howManyWasals].addWasal(wasal);
+            wasale[Math.abs(random.nextInt())%howManyWasals].addWasal(wasal);
 
     }
     public Rewardable getReward() {
@@ -34,7 +34,7 @@ public class Person {
         }
     }
 
-    public int countWasals(){
+    public Integer countWasals(){
         if(howManyWasals==0)
             return 0;
         int sum=0;
@@ -51,6 +51,12 @@ public class Person {
             reward.add(wasale[howManyWasals]);
             wasale[howManyWasals]=null;
         }
+        else
+            reward.add(fief.getPartOfFief());
+        for(int i=0;i<howManyWasals;i++)
+            reward.add(wasale[i].loseWar());
+        if(fief.isEmpty() && howManyWasals==0)
+            map.goToRandomKing().addWasal((Knight)this);
         return reward;
     }
 

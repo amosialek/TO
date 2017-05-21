@@ -3,8 +3,8 @@ package TO;
 
 public class King extends Person {
     public void fightWithSomeone(){
-        map.goToRandomKing();
 
+        Atena.judgeWar(this,map.goToRandomKing());
     }
     public King(Map map,Fief fief){
         this.fief=fief;
