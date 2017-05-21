@@ -6,4 +6,9 @@ public class Knight extends Person implements  Rewardable{
     public boolean isFief() {
         return false;
     }
+    public Knight(Map map){
+        this.map=map;
+        King king = map.goToRandomKing();
+        king.addWasal(this);
+    }
 }

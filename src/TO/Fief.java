@@ -39,6 +39,12 @@ public class Fief implements Rewardable {
 
     }
 
+    public void merge(Fief fief){
+        this.land=fief.land;
+        this.urban=fief.urban;
+    }
+
+
     @Override
     public boolean isFief() {
         return true;
