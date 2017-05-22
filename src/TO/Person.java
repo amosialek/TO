@@ -25,10 +25,7 @@ public class Person {
             wasale[howManyWasals].senior=this;
             howManyWasals++;
         }
-      /*  else
-            if(fief.isEmpty() && howManyWasals==0)
-                System.out.println("niemozliwe");
-       */ else {
+  else {
                 if(howManyWasals==0) {
                     King king;
                     while((king=map.goToRandomKing())==this){}
