@@ -25,12 +25,17 @@ public class Person {
             wasale[howManyWasals].senior=this;
             howManyWasals++;
         }
-        else
+      /*  else
             if(fief.isEmpty() && howManyWasals==0)
                 System.out.println("niemozliwe");
-        else {
-
-                wasale[Math.abs(random.nextInt()) % howManyWasals].addWasal(wasal);
+       */ else {
+                if(howManyWasals==0) {
+                    King king;
+                    while((king=map.goToRandomKing())==this){}
+                    king.addWasal(wasal);
+                }
+                else
+                    wasale[Math.abs(random.nextInt()) % howManyWasals].addWasal(wasal);
 
             }
 
@@ -56,6 +61,8 @@ public class Person {
 
     public Reward loseWar() {
         Reward reward=new Reward();
+        if(fief.isEmpty() && howManyWasals==0)
+            return reward;
         if(fief.isEmpty()) {
             howManyWasals--;
             reward.add(wasale[howManyWasals]);
@@ -66,8 +73,10 @@ public class Person {
         for(int i=0;i<howManyWasals;i++)
             reward.add(wasale[i].loseWar());
         if(fief.isEmpty() && howManyWasals==0) {
-            senior.freeWasal(this);
-            map.goToRandomKing().addWasal((Knight) this);
+            if(senior!=null){
+                senior.freeWasal(this);
+                map.goToRandomKing().addWasal((Knight) this);
+            }
         }
         return reward;
     }
@@ -93,5 +102,8 @@ public class Person {
 
     public void winWar(Reward reward) {
         fief.merge(reward.fief);
+        for(Knight k :reward.knights){
+            addWasal(k);
+        }
     }
 }
