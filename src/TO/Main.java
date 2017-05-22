@@ -14,6 +14,5 @@ public class Main {
         map.goToRandomKing().fightWithSomeone();
         map.goToRandomKing().fightWithSomeone();
         map.goToRandomKing().fightWithSomeone();
-
     }
 }
