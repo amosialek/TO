@@ -5,24 +5,34 @@ import java.util.Random;
 
 public class Person {
     private Random random = new Random();
+    protected Person senior;
     protected Map map;
     public  Fief fief;
     private Knight[] wasale=new Knight[7];
-    private int howManyWasals;
+    protected int howManyWasals;
 
     public boolean canHaveAnotherWasal(){
-        if(howManyWasals>=7 || fief.isEmpty())
+        if(howManyWasals>=7 || fief.isEmpty()) {
+
             return false;
+        }
         return true;
     }
     public void addWasal(Knight wasal){
         if(canHaveAnotherWasal()){
             wasal.fief=this.fief.getPartOfFief();
             wasale[howManyWasals]=wasal;
+            wasale[howManyWasals].senior=this;
             howManyWasals++;
         }
         else
-            wasale[Math.abs(random.nextInt())%howManyWasals].addWasal(wasal);
+            if(fief.isEmpty() && howManyWasals==0)
+                System.out.println("niemozliwe");
+        else {
+
+                wasale[Math.abs(random.nextInt()) % howManyWasals].addWasal(wasal);
+
+            }
 
     }
     public Rewardable getReward() {
@@ -55,11 +65,31 @@ public class Person {
             reward.add(fief.getPartOfFief());
         for(int i=0;i<howManyWasals;i++)
             reward.add(wasale[i].loseWar());
-        if(fief.isEmpty() && howManyWasals==0)
-            map.goToRandomKing().addWasal((Knight)this);
+        if(fief.isEmpty() && howManyWasals==0) {
+            senior.freeWasal(this);
+            map.goToRandomKing().addWasal((Knight) this);
+        }
         return reward;
     }
 
+    private void freeWasal(Person wasal){
+        if(howManyWasals==1){
+            howManyWasals=0;
+            wasale[0]=null;
+            if(fief.isEmpty())
+                if(senior!=null) {
+                    senior.freeWasal(this);
+                    map.goToRandomKing().addWasal((Knight)this);
+                }
+        }
+        for(int i=0;i<howManyWasals;i++)        {
+            if(wasale[i]==wasal){
+                howManyWasals--;
+                wasale[i]=wasale[howManyWasals];
+                wasale[howManyWasals]=null;
+            }
+        }
+    }
 
     public void winWar(Reward reward) {
         fief.merge(reward.fief);
